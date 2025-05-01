@@ -56,8 +56,13 @@ Before starting, ensure you have the following dependencies installed:
 - scikit-learn
 - fluidsynth
 - a .sf2 file
+- pickle
+- pydub
+- Flask
+- basic_pitch
 
 You can install the necessary dependencies by running the following:
 
 ```bash
-pip install tensorflow keras pretty_midi numpy pandas matplotlib scikit-learn
+pip install tensorflow keras pretty_midi numpy pandas matplotlib scikit-learn pickle pydub
+flask basic_pitch
