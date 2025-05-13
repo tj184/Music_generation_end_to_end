@@ -1,30 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Music Generator</title>
-    <style>
-        audio {
-            width: 100%;
-            margin-top: 20px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Music Generator</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(52, 152, 219, 0.6)),
+                  url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1050&q=80') no-repeat center center/cover;
+      overflow: hidden;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.75);
+      padding: 30px 25px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      animation: float 5s ease-in-out infinite;
+    }
+
+    .no-float {
+      animation: none !important;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      animation: fadeIn 1s ease-out forwards;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 15px;
+      border-radius: 10px;
+      border: none;
+      font-size: 15px;
+      resize: vertical;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      outline: none;
+      margin-bottom: 18px;
+    }
+
+    textarea::placeholder {
+      color: #ccc;
+    }
+
+    button {
+      background-color: #27ae60;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    button:hover {
+      background-color: #1e8449;
+      transform: scale(1.05);
+    }
+
+    audio {
+      width: 100%;
+      margin-top: 20px;
+      border-radius: 10px;
+      animation: fadeIn 1.5s ease-out forwards;
+    }
+
+    h3 {
+      margin-top: 30px;
+      animation: fadeIn 1.4s ease-out forwards;
+    }
+
+    .loader {
+      margin-top: 20px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3498db;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .footer {
+      margin-top: 35px;
+      font-size: 0.85rem;
+      color: #ccc;
+      animation: fadeIn 2s ease-out forwards;
+    }
+  </style>
 </head>
 <body>
-    <h1>Enter your music idea</h1>
+  <div class="container" id="container">
+    <h1><i class="fas fa-music"></i> AI Music Generator</h1>
     <form method="post">
-        <textarea name="music_input" rows="10" cols="50" placeholder="Enter your music genre or description here..." required></textarea><br><br>
-        <button type="submit">Generate Music</button>
+      <textarea name="music_input" rows="5"
+        placeholder="Describe your music idea or genre (e.g., 'lofi chill', 'epic cinematic')..." required></textarea>
+      <button type="submit">
+        <i class="fas fa-play-circle"></i> Generate Music
+      </button>
     </form>
 
-    {% if file_url %}
-        <h3>Generated Music:</h3>
-        <!-- ✅ Audio Player for MP3 -->
-        <audio controls autoplay>
-            <source src="{{ file_url }}" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
+    {% if loading %}
+      <div class="loader"></div>
     {% endif %}
+
+    {% if file_url %}
+      <h3><i class="fas fa-headphones-alt"></i> Your Generated Track:</h3>
+      <audio controls autoplay id="player">
+        <source src="{{ file_url }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+    {% endif %}
+
+    <div class="footer">
+      🎧 Create your own vibe with AI-powered music generation!
+    </div>
+  </div>
+
+  <script>
+    const audio = document.getElementById("player");
+    const container = document.getElementById("container");
+    if (audio) {
+      audio.addEventListener("play", () => {
+        container.classList.add("no-float");
+      });
+    }
+  </script>
 </body>
 </html>
